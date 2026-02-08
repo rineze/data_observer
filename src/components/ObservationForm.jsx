@@ -32,15 +32,23 @@ export default function ObservationForm({ session }) {
   const [submitting, setSubmitting] = useState(false)
   const [errors, setErrors] = useState({})
 
+  const isDateField = (field) => ['term_date', 'effective_date'].includes(field)
+
   const update = (key, value) => {
-    setForm((prev) => ({ ...prev, [key]: value }))
+    setForm((prev) => {
+      const next = { ...prev, [key]: value }
+      if (key === 'field_observed') {
+        next.corrected_value = ''
+      }
+      return next
+    })
     if (errors[key]) setErrors((prev) => ({ ...prev, [key]: null }))
   }
 
   const validate = () => {
     const errs = {}
-    if (!form.provider_npi || !/^\d{10}$/.test(form.provider_npi)) {
-      errs.provider_npi = 'NPI must be exactly 10 digits'
+    if (!form.provider_npi || !/^\d{9}$/.test(form.provider_npi)) {
+      errs.provider_npi = 'NPI must be exactly 9 digits'
     }
     if (!form.provider_name.trim()) errs.provider_name = 'Required'
     if (!form.field_observed) errs.field_observed = 'Required'
@@ -97,10 +105,10 @@ export default function ObservationForm({ session }) {
             <input
               type="text"
               value={form.provider_npi}
-              onChange={(e) => update('provider_npi', e.target.value.replace(/\D/g, '').slice(0, 10))}
-              placeholder="10-digit NPI"
+              onChange={(e) => update('provider_npi', e.target.value.replace(/\D/g, '').slice(0, 9))}
+              placeholder="9-digit NPI"
               className={inputClass('provider_npi')}
-              maxLength={10}
+              maxLength={9}
             />
             {errors.provider_npi && <p className="text-xs text-red-500 mt-1">{errors.provider_npi}</p>}
           </div>
@@ -144,10 +152,10 @@ export default function ObservationForm({ session }) {
             Corrected Value <span className="text-red-500">*</span>
           </label>
           <input
-            type="text"
+            type={isDateField(form.field_observed) ? 'date' : 'text'}
             value={form.corrected_value}
             onChange={(e) => update('corrected_value', e.target.value)}
-            placeholder="The verified, correct value"
+            placeholder={isDateField(form.field_observed) ? '' : 'The verified, correct value'}
             className={`${inputClass('corrected_value')} !border-slate-400 !bg-slate-50 font-semibold text-slate-800`}
           />
           {errors.corrected_value && <p className="text-xs text-red-500 mt-1">{errors.corrected_value}</p>}
