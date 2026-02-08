@@ -7,6 +7,8 @@ export default function Navbar({ session }) {
   const links = [
     { to: '/dashboard', label: 'Dashboard' },
     { to: '/submit', label: 'Submit Observation' },
+    { to: '/bulk-tag', label: 'Bulk Tag' },
+    { to: '/batch-summary', label: 'Batch Summary' },
   ]
 
   const isActive = (path) => location.pathname === path

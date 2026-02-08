@@ -7,6 +7,9 @@ import Login from './pages/Login'
 import Submit from './pages/Submit'
 import Dashboard from './pages/Dashboard'
 import Review from './pages/Review'
+import BulkTag from './pages/BulkTag'
+import BatchReview from './pages/BatchReview'
+import BatchSummary from './pages/BatchSummary'
 
 export default function App() {
   const [session, setSession] = useState(null)
@@ -51,6 +54,9 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard session={session} />} />
           <Route path="/submit" element={<Submit session={session} />} />
           <Route path="/review/:id" element={<Review session={session} />} />
+          <Route path="/bulk-tag" element={<BulkTag session={session} />} />
+          <Route path="/batch/:id" element={<BatchReview session={session} />} />
+          <Route path="/batch-summary" element={<BatchSummary />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </Layout>
