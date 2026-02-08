@@ -83,6 +83,24 @@ export default function BatchReview({ session }) {
     navigate('/dashboard')
   }
 
+  const handleApply = async () => {
+    setSubmitting(true)
+
+    const { error } = await supabase
+      .from('bulk_batches')
+      .update({ status: 'applied' })
+      .eq('id', id)
+
+    if (error) {
+      toast.error('Failed to mark batch as applied.')
+      setSubmitting(false)
+      return
+    }
+
+    toast.success('Batch marked as applied.')
+    navigate('/dashboard')
+  }
+
   const handleDownload = () => {
     if (!batch) return
 
@@ -253,7 +271,25 @@ export default function BatchReview({ session }) {
 
         {/* Review panel */}
         <div className="bg-white rounded-lg border border-gray-200 p-6 h-fit">
-          {batch.status !== 'pending' ? (
+          {batch.status === 'approved' ? (
+            <div className="space-y-4">
+              <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+                <p className="text-sm text-green-800">
+                  This batch has been <span className="font-medium">approved</span>.
+                </p>
+                <p className="text-xs text-green-600 mt-1">
+                  Once the corrections have been applied to the source system, mark it as applied below.
+                </p>
+              </div>
+              <button
+                onClick={handleApply}
+                disabled={submitting}
+                className="w-full py-2.5 px-4 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {submitting ? 'Updating...' : 'Mark as Applied'}
+              </button>
+            </div>
+          ) : batch.status !== 'pending' ? (
             <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
               <p className="text-sm text-gray-500">
                 This batch has been <span className="font-medium">{batch.status}</span>.

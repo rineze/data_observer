@@ -46,11 +46,51 @@ export default function ReviewPanel({ observation, session, onReviewComplete }) 
     onReviewComplete()
   }
 
+  const handleApply = async () => {
+    setSubmitting(true)
+
+    const { error } = await supabase
+      .from('observations')
+      .update({ status: 'applied' })
+      .eq('id', observation.id)
+
+    if (error) {
+      toast.error('Failed to mark as applied.')
+      setSubmitting(false)
+      return
+    }
+
+    toast.success('Observation marked as applied.')
+    onReviewComplete()
+  }
+
+  if (observation.status === 'approved') {
+    return (
+      <div className="space-y-4">
+        <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+          <p className="text-sm text-green-800">
+            This observation has been <span className="font-medium">approved</span>.
+          </p>
+          <p className="text-xs text-green-600 mt-1">
+            Once the correction has been applied to the source system, mark it as applied below.
+          </p>
+        </div>
+        <button
+          onClick={handleApply}
+          disabled={submitting}
+          className="w-full py-2.5 px-4 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {submitting ? 'Updating...' : 'Mark as Applied'}
+        </button>
+      </div>
+    )
+  }
+
   if (observation.status !== 'pending') {
     return (
       <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
         <p className="text-sm text-gray-500">
-          This observation has already been <span className="font-medium">{observation.status}</span>.
+          This observation has been <span className="font-medium">{observation.status}</span>.
         </p>
       </div>
     )
