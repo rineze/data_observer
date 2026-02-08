@@ -39,7 +39,6 @@ export default function ObservationTable({ observations, loading }) {
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Provider NPI</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Provider Name</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payer</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Field</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Corrected Value</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -56,7 +55,6 @@ export default function ObservationTable({ observations, loading }) {
                 <td className="px-4 py-3 text-sm text-gray-600 whitespace-nowrap">{formatDate(obs.created_at)}</td>
                 <td className="px-4 py-3 text-sm text-gray-900 font-mono whitespace-nowrap">{obs.provider_npi}</td>
                 <td className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap">{obs.provider_name}</td>
-                <td className="px-4 py-3 text-sm text-gray-600 whitespace-nowrap">{obs.payer_name || '-'}</td>
                 <td className="px-4 py-3 text-sm text-gray-600 whitespace-nowrap">{obs.field_observed}</td>
                 <td className="px-4 py-3 text-sm font-semibold text-slate-800 whitespace-nowrap">{obs.corrected_value}</td>
                 <td className="px-4 py-3 whitespace-nowrap"><StatusBadge status={obs.status} /></td>

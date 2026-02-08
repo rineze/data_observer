@@ -4,13 +4,8 @@ const FIELD_TYPES = [
   { key: 'all', label: 'All Fields' },
   { key: 'term_date', label: 'Termination Date' },
   { key: 'effective_date', label: 'Effective Date' },
-  { key: 'enrollment_status', label: 'Enrollment Status' },
-  { key: 'tin', label: 'Tax ID Number (TIN)' },
-  { key: 'payer_id', label: 'Payer ID' },
-  { key: 'group_npi', label: 'Group NPI' },
-  { key: 'billing_npi', label: 'Billing NPI' },
   { key: 'credentialing_status', label: 'Credentialing Status' },
-  { key: 'other', label: 'Other' },
+  { key: 'enrollment_status', label: 'Enrollment Status' },
 ]
 
 export default function Filters({ filters, onChange }) {

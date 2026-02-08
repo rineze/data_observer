@@ -5,13 +5,8 @@ import toast from 'react-hot-toast'
 const FIELD_TYPES = [
   { key: 'term_date', label: 'Termination Date' },
   { key: 'effective_date', label: 'Effective Date' },
-  { key: 'enrollment_status', label: 'Enrollment Status' },
-  { key: 'tin', label: 'Tax ID Number (TIN)' },
-  { key: 'payer_id', label: 'Payer ID' },
-  { key: 'group_npi', label: 'Group NPI' },
-  { key: 'billing_npi', label: 'Billing NPI' },
   { key: 'credentialing_status', label: 'Credentialing Status' },
-  { key: 'other', label: 'Other' },
+  { key: 'enrollment_status', label: 'Enrollment Status' },
 ]
 
 const EVIDENCE_TYPES = [
@@ -26,12 +21,7 @@ const EVIDENCE_TYPES = [
 const INITIAL_FORM = {
   provider_npi: '',
   provider_name: '',
-  payer_name: '',
   field_observed: '',
-  system_a_name: '',
-  system_a_value: '',
-  system_b_name: '',
-  system_b_value: '',
   corrected_value: '',
   evidence_type: '',
   evidence_notes: '',
@@ -67,15 +57,12 @@ export default function ObservationForm({ session }) {
     setSubmitting(true)
 
     const { error } = await supabase.from('observations').insert({
-      ...form,
+      provider_npi: form.provider_npi,
       provider_name: form.provider_name.trim(),
-      payer_name: form.payer_name.trim() || null,
+      field_observed: form.field_observed,
       corrected_value: form.corrected_value.trim(),
+      evidence_type: form.evidence_type,
       evidence_notes: form.evidence_notes.trim() || null,
-      system_a_name: form.system_a_name.trim() || null,
-      system_a_value: form.system_a_value.trim() || null,
-      system_b_name: form.system_b_name.trim() || null,
-      system_b_value: form.system_b_value.trim() || null,
       status: 'pending',
       submitted_by: session.user.id,
       submitted_by_email: session.user.email,
@@ -131,74 +118,21 @@ export default function ObservationForm({ session }) {
             {errors.provider_name && <p className="text-xs text-red-500 mt-1">{errors.provider_name}</p>}
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Payer Name</label>
-            <input
-              type="text"
-              value={form.payer_name}
-              onChange={(e) => update('payer_name', e.target.value)}
-              placeholder="e.g., Aetna, UHC, BCBS"
-              className={inputClass('payer_name')}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Field Observed <span className="text-red-500">*</span>
-            </label>
-            <select
-              value={form.field_observed}
-              onChange={(e) => update('field_observed', e.target.value)}
-              className={inputClass('field_observed')}
-            >
-              <option value="">Select field...</option>
-              {FIELD_TYPES.map((f) => (
-                <option key={f.key} value={f.key}>{f.label}</option>
-              ))}
-            </select>
-            {errors.field_observed && <p className="text-xs text-red-500 mt-1">{errors.field_observed}</p>}
-          </div>
-        </div>
-      </fieldset>
-
-      {/* Source Systems */}
-      <fieldset className="space-y-4">
-        <legend className="text-xs font-medium text-gray-400 uppercase tracking-wider">Source Systems</legend>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 space-y-3">
-            <p className="text-xs font-medium text-gray-500">Source System A</p>
-            <input
-              type="text"
-              value={form.system_a_name}
-              onChange={(e) => update('system_a_name', e.target.value)}
-              placeholder="System name (e.g., Credentialing System)"
-              className={inputClass('system_a_name')}
-            />
-            <input
-              type="text"
-              value={form.system_a_value}
-              onChange={(e) => update('system_a_value', e.target.value)}
-              placeholder="Value shown in this system"
-              className={inputClass('system_a_value')}
-            />
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 space-y-3">
-            <p className="text-xs font-medium text-gray-500">Source System B</p>
-            <input
-              type="text"
-              value={form.system_b_name}
-              onChange={(e) => update('system_b_name', e.target.value)}
-              placeholder="System name (e.g., Payer Portal)"
-              className={inputClass('system_b_name')}
-            />
-            <input
-              type="text"
-              value={form.system_b_value}
-              onChange={(e) => update('system_b_value', e.target.value)}
-              placeholder="Value shown in this system"
-              className={inputClass('system_b_value')}
-            />
-          </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Field Observed <span className="text-red-500">*</span>
+          </label>
+          <select
+            value={form.field_observed}
+            onChange={(e) => update('field_observed', e.target.value)}
+            className={inputClass('field_observed')}
+          >
+            <option value="">Select field...</option>
+            {FIELD_TYPES.map((f) => (
+              <option key={f.key} value={f.key}>{f.label}</option>
+            ))}
+          </select>
+          {errors.field_observed && <p className="text-xs text-red-500 mt-1">{errors.field_observed}</p>}
         </div>
       </fieldset>
 

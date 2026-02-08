@@ -39,10 +39,6 @@ export default function ObservationDetail({ observation }) {
       {/* Metadata */}
       <div className="grid grid-cols-2 gap-4 text-sm">
         <div>
-          <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Payer</p>
-          <p className="text-gray-900">{obs.payer_name || 'N/A'}</p>
-        </div>
-        <div>
           <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Field Observed</p>
           <p className="text-gray-900">{obs.field_observed}</p>
         </div>
@@ -56,22 +52,11 @@ export default function ObservationDetail({ observation }) {
         </div>
       </div>
 
-      {/* Side-by-side comparison */}
+      {/* Corrected Value */}
       <div>
-        <p className="text-gray-400 text-xs uppercase tracking-wider mb-3">Data Comparison</p>
-        <div className="grid grid-cols-3 gap-3">
-          <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-            <p className="text-xs text-gray-400 mb-1">{obs.system_a_name || 'System A'}</p>
-            <p className="text-sm font-medium text-gray-700">{obs.system_a_value || 'N/A'}</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-            <p className="text-xs text-gray-400 mb-1">{obs.system_b_name || 'System B'}</p>
-            <p className="text-sm font-medium text-gray-700">{obs.system_b_value || 'N/A'}</p>
-          </div>
-          <div className="bg-slate-700 rounded-lg p-4">
-            <p className="text-xs text-slate-300 mb-1">Corrected Value</p>
-            <p className="text-sm font-bold text-white">{obs.corrected_value}</p>
-          </div>
+        <p className="text-gray-400 text-xs uppercase tracking-wider mb-3">Corrected Value</p>
+        <div className="bg-slate-700 rounded-lg p-4">
+          <p className="text-sm font-bold text-white">{obs.corrected_value}</p>
         </div>
       </div>
 
